@@ -26,6 +26,10 @@ namespace Tarot
     E  = 2.71828182845904523536028747135266250;
 
     TAROT_API template <typename T>
+    concept IntegerNumber = std::is_integral_v<T>;
+    TAROT_API template <typename T>
+    concept FloatNumber = std::is_floating_point_v<T>;
+    TAROT_API template <typename T>
     concept RealNumber = std::is_arithmetic_v<T>; // Accepts both integral and floating-point types
 
     TAROT_API template <typename T>

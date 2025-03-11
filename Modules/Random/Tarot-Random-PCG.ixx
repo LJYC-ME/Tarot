@@ -15,9 +15,9 @@ namespace Tarot
 
     TAROT_API class PCG
     {
-        static constexpr auto PCG32DefaultState  = 0x853c49e6748fea9bULL;
-        static constexpr auto PCG32DefaultStream = 0xda3e39cb94b95bdbULL;
-        static constexpr auto PCG32Multiplier    = 0x5851f42d4c957f2dULL;
+        static constexpr auto PCG32DefaultState     = 0x853c49e6748fea9bULL;
+        static constexpr auto PCG32DefaultIncrement = 0xda3e39cb94b95bdbULL;
+        static constexpr auto PCG32Multiplier       = 0x5851f42d4c957f2dULL;
 
     public:
         template<RealNumber T = Float>
@@ -28,15 +28,15 @@ namespace Tarot
         PCG(uint64_t _SequenceIndex = GetRandomSeed(), uint32_t _Seed = GetRandomSeed()) { SetSequence(_SequenceIndex, _Seed); }
 
     private:
-        uint64_t State  {PCG32DefaultState};
-        uint64_t Stream {PCG32DefaultStream};
+        uint64_t State      {PCG32DefaultState};
+        uint64_t Increment  {PCG32DefaultIncrement};
     };
 
     template<> uint32_t PCG::
     Uniform<uint32_t>()
     {
         uint64_t oldstate = State;
-        State = oldstate * PCG32Multiplier + PCG32DefaultStream;
+        State = oldstate * PCG32Multiplier + PCG32DefaultIncrement;
         auto xorshifted = static_cast<uint32_t>(((oldstate >> 18u) ^ oldstate) >> 27u);
         auto rot        = static_cast<uint32_t>(oldstate >> 59u);
         return (xorshifted >> rot) | (xorshifted << ((~rot + 1u) & 31));
@@ -95,7 +95,7 @@ namespace Tarot
         // _Seed = _Seed? _Seed : GetRandomSeed();
 
         State = 0u;
-        Stream = (_SequenceIndex << 1u) | 1u;
+        Increment = (_SequenceIndex << 1u) | 1u;
         Uniform<uint32_t>();
         State += _Seed;
         Uniform<uint32_t>();
