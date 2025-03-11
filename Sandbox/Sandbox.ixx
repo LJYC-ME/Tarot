@@ -1,25 +1,23 @@
 module;
 #include <iostream>
+//#include <random>
 export module Sandbox;
 import Tarot;
 import Tarot.Internal;
 
-struct Foo
-{
-};
-
 export int main(int argc, char *argv[])
 {
+
     std::cout << "Hello World!\n";
 
-    auto PCG = Tarot::PCG{};
-    for (int i = 0; i < 10; i++)
-    std::cout << PCG.Uniform<int>() << std::endl;
-    auto MT = Tarot::MT19937{};
+    Tarot::PCG rng1, rng2;
+    rng1.SetSequence(std::time(0), std::time(0));
 
-std::cout << '\n';
+    for (int i = 0; i < 10; i++) {
+        auto [x, y, z] = Tarot::SampleHemisphere(rng1, rng2);
+        std::cout << x << ' ' << y << ' ' << z << '\n';
+        //std::cout << Tarot::Random<float>() << '\n';
+    }
 
-    for (int i = 0; i < 10; i++)
-        std::cout << MT.Uniform() << std::endl;
     return 0;
 }

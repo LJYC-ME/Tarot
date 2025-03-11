@@ -11,7 +11,7 @@ import Tarot.Internal;
 namespace Tarot
 {
 
-    export class MT19937 // Mersenne Twister
+    TAROT_API class MT19937 // Mersenne Twister
     {
     public:
         template<RealNumber T = Float>

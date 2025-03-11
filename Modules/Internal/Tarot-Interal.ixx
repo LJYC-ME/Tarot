@@ -5,6 +5,8 @@
 module;
 #include <limits>
 #include <cmath>
+#include <concepts>
+#include <random>
 export module Tarot.Internal;
 
 namespace Tarot
@@ -18,9 +20,26 @@ namespace Tarot
 
     TAROT_API constexpr Float
     OneMinusEpsilon = 1.0 - std::numeric_limits<Float>::epsilon();
+    TAROT_API constexpr Float
+    Pi = 3.14159265358979323846264338327950288;
+    TAROT_API constexpr Float
+    E  = 2.71828182845904523536028747135266250;
 
     TAROT_API template <typename T>
     concept RealNumber = std::is_arithmetic_v<T>; // Accepts both integral and floating-point types
+
+    TAROT_API template <typename T>
+    concept SamplableRNG = requires(T _RNG)
+    {
+        { _RNG.template Uniform<Float>() } -> std::same_as<Float>;
+    };
+
+    TAROT_API inline auto
+    GetRandomSeed() -> uint32_t
+    {
+        static std::random_device RandomDevice{};
+        return RandomDevice();
+    }
 
     TAROT_API constexpr auto
     MixBits(uint64_t _V) -> uint64_t

@@ -13,7 +13,7 @@ import Tarot.Internal;
 namespace Tarot
 {
 
-    export class PCG
+    TAROT_API class PCG
     {
         static constexpr auto PCG32DefaultState  = 0x853c49e6748fea9bULL;
         static constexpr auto PCG32DefaultStream = 0xda3e39cb94b95bdbULL;
@@ -23,10 +23,9 @@ namespace Tarot
         template<RealNumber T = Float>
         T Uniform();
 
-        void SetSequence(uint64_t _SequenceIndex, uint64_t _Seed);
+        void SetSequence(uint64_t _SequenceIndex, uint32_t _Seed);
 
-        PCG() = default;
-        PCG(uint64_t _SequenceIndex, uint64_t _Seed) { SetSequence(_SequenceIndex, _Seed); }
+        PCG(uint64_t _SequenceIndex = GetRandomSeed(), uint32_t _Seed = GetRandomSeed()) { SetSequence(_SequenceIndex, _Seed); }
 
     private:
         uint64_t State  {PCG32DefaultState};
@@ -89,9 +88,11 @@ namespace Tarot
     };
 
     void PCG::
-    SetSequence(uint64_t _SequenceIndex, uint64_t _Seed)
+    SetSequence(uint64_t _SequenceIndex/* = GetRandomSeed() */,
+                uint32_t _Seed         /* = GetRandomSeed() */)
     {
-        _Seed = _Seed? _Seed : MixBits(_Seed);
+        // _SequenceIndex = _SequenceIndex? _SequenceIndex : GetRandomSeed();
+        // _Seed = _Seed? _Seed : GetRandomSeed();
 
         State = 0u;
         Stream = (_SequenceIndex << 1u) | 1u;
