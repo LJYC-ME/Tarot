@@ -5,6 +5,7 @@
 module;
 #include <limits>
 #include <cmath>
+#include <vector>
 #include <concepts>
 #include <random>
 export module Tarot.Internal;
@@ -24,16 +25,23 @@ namespace Tarot
     Pi = 3.14159265358979323846264338327950288;
     TAROT_API constexpr Float
     E  = 2.71828182845904523536028747135266250;
-
     TAROT_API template <typename T>
     concept IntegerNumber = std::is_integral_v<T>;
     TAROT_API template <typename T>
     concept FloatNumber = std::is_floating_point_v<T>;
     TAROT_API template <typename T>
     concept RealNumber = std::is_arithmetic_v<T>; // Accepts both integral and floating-point types
+    TAROT_API template <size_t Length, RealNumber NumT = Float> using
+    PointNF = std::array<NumT, Length>;
+    TAROT_API template <RealNumber NumT = Float> using
+    Point1F = NumT;
+    TAROT_API template <RealNumber NumT = Float> using
+    Point2F = PointNF<2, NumT>;
+    TAROT_API template <RealNumber NumT = Float> using
+    Point3F = PointNF<3, NumT>;
 
     TAROT_API template <typename T>
-    concept SamplableRNG = requires(T _RNG)
+    concept UniformRNG = requires(T _RNG)
     {
         { _RNG.template Uniform<Float>() } -> std::same_as<Float>;
     };

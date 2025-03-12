@@ -10,8 +10,8 @@ import Tarot.Random;
 namespace Tarot
 {
 
-    TAROT_API template<FloatNumber NumT = Float, SamplableRNG RNG> auto
-    SampleLinear(RNG& _U, NumT _a, NumT _b) -> NumT
+    TAROT_API template<FloatNumber NumT = Float, UniformRNG RNG> auto
+    SampleLinear(RNG& _U, NumT _a, NumT _b) -> Point1F<NumT>
     {
         // f(x) = (1-x)a + (x)b, where x \in [0,1] and b > a >= 0.
         assert(_a >= 0 && _b >= 0);
@@ -25,8 +25,8 @@ namespace Tarot
         return std::min(Sample, OneMinusEpsilon); // round-off error may cause the result to be equal to 1
     }
 
-    TAROT_API template<FloatNumber NumT = Float, SamplableRNG RNG> auto
-    SampleTent(RNG& _U) -> std::tuple<NumT, NumT>
+    TAROT_API template<FloatNumber NumT = Float, UniformRNG RNG> auto
+    SampleTent(RNG& _U) -> Point2F<NumT>
     {
         // f(x) = r - |x| when |x| < r, otherwise f(x) = 0.
         assert(false);//WIP

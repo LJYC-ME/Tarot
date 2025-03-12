@@ -9,8 +9,8 @@ import Tarot.Internal;
 
 namespace Tarot
 {
-    static_assert(SamplableRNG<MT19937>);
-    static_assert(SamplableRNG<PCG>);
+    static_assert(UniformRNG<MT19937>);
+    static_assert(UniformRNG<PCG>);
 
     TAROT_API
     template<RealNumber T> T
