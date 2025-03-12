@@ -8,7 +8,7 @@ import Tarot.Random;
 namespace Tarot
 {
 
-    TAROT_API template<FloatNumber NumT = Float, UniformRNG RNG> auto
+    TAROT_API template<UniformRNG RNG> auto
     SampleDiscrete(const Float _Weights[], Index _WeightCounts, RNG& _U) -> Index
     {
         if (_WeightCounts == 0)
