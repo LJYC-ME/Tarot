@@ -3,9 +3,7 @@
  */
 
 module;
-#include <cassert>
 #include <algorithm>
-#include <__random/random_device.h>
 export module Tarot.Random:RNG;
 
 import Tarot.Internal;
@@ -57,7 +55,7 @@ namespace Tarot
         uint32_t v = Uniform<uint32_t>();
         if (v <= (uint32_t)std::numeric_limits<int32_t>::max())
             return int32_t(v);
-        assert(v >= (uint32_t)std::numeric_limits<int32_t>::min());
+        Assert(v >= (uint32_t)std::numeric_limits<int32_t>::min());
         return int32_t(v - std::numeric_limits<int32_t>::min()) +
                std::numeric_limits<int32_t>::min();
     };
@@ -70,7 +68,7 @@ namespace Tarot
         if (v <= (uint64_t)std::numeric_limits<int64_t>::max())
             // Safe to type convert directly.
                 return int64_t(v);
-        assert(v >= (uint64_t)std::numeric_limits<int64_t>::min());
+        Assert(v >= (uint64_t)std::numeric_limits<int64_t>::min());
         return int64_t(v - std::numeric_limits<int64_t>::min()) +
                std::numeric_limits<int64_t>::min();
     };

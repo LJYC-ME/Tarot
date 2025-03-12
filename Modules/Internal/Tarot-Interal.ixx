@@ -3,6 +3,7 @@
  */
 
 module;
+#include <cassert>
 #include <limits>
 #include <cmath>
 #include <vector>
@@ -12,11 +13,13 @@ export module Tarot.Internal;
 
 namespace Tarot
 {
+    TAROT_API constexpr inline void
+    Assert(bool _Expression) { assert(_Expression); }
 
 #if defined(TAROT_PRECISION_DOUBLE)
-    export using Float = double;
+    TAROT_API using Float = double;
 #else
-    export using Float = float;
+    TAROT_API using Float = float;
 #endif
 
     TAROT_API constexpr Float
@@ -31,6 +34,10 @@ namespace Tarot
     concept FloatNumber = std::is_floating_point_v<T>;
     TAROT_API template <typename T>
     concept RealNumber = std::is_arithmetic_v<T>; // Accepts both integral and floating-point types
+    TAROT_API using
+    Index = std::size_t;
+    TAROT_API constexpr Index
+    InvalidIndex = ~0U;
     TAROT_API using
     Point1F = Float;
     TAROT_API struct
