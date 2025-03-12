@@ -8,21 +8,22 @@ import Tarot.Random;
 namespace Tarot
 {
 
-    TAROT_API template<FloatNumber NumT = Float, UniformRNG RNG> auto
-    SampleUnitSquare(RNG& _Ux, RNG& _Uy) -> Point2F<NumT>
+    TAROT_API template<UniformRNG RNG> auto
+    SampleUnitSquare(RNG& _Ux, RNG& _Uy) -> Point2F
     {
-        return { _Ux.template Uniform<NumT>(), _Uy.template Uniform<NumT>() };
+        return { _Ux.template Uniform<Float>(), _Uy.template Uniform<Float>() };
     }
 
-    TAROT_API template<FloatNumber NumT = Float, UniformRNG RNG> auto
-    SampleUnitHemisphere(RNG& _Utheta, RNG& _Uphi) -> Point3F<NumT>
+    TAROT_API template<UniformRNG RNG> auto
+    SampleUnitHemisphere(RNG& _Utheta, RNG& _Uphi) -> Point3F
     {
-        NumT Theta  = std::acos(_Utheta.template Uniform<NumT>());
-        NumT Phi    = 2.0 * Pi * _Uphi.template Uniform<NumT>();
-        NumT X = std::sin(Phi) * std::cos(Theta);
-        NumT Y = std::sin(Phi) * std::sin(Theta);
-        NumT Z = std::cos(Theta);
-        return { X, Y, Z };
+        Float Theta  = std::acos(_Utheta.template Uniform<Float>());
+        Float Phi    = 2.0 * Pi * _Uphi.template Uniform<Float>();
+        Float X = std::sin(Phi) * std::cos(Theta);
+        Float Y = std::sin(Phi) * std::sin(Theta);
+        Float Z = std::cos(Theta);
+
+        return {X, Y, Z};
     }
 
 } // namespace Tarot

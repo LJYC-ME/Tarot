@@ -31,20 +31,50 @@ namespace Tarot
     concept FloatNumber = std::is_floating_point_v<T>;
     TAROT_API template <typename T>
     concept RealNumber = std::is_arithmetic_v<T>; // Accepts both integral and floating-point types
-    TAROT_API template <size_t Length, RealNumber NumT = Float> using
-    PointNF = std::array<NumT, Length>;
-    TAROT_API template <RealNumber NumT = Float> using
-    Point1F = NumT;
-    TAROT_API template <RealNumber NumT = Float> using
-    Point2F = PointNF<2, NumT>;
-    TAROT_API template <RealNumber NumT = Float> using
-    Point3F = PointNF<3, NumT>;
+    TAROT_API using
+    Point1F = Float;
+    TAROT_API struct
+    Point2F { union { Point1F Data[2]{0}; struct { Point1F X, Y; }; }; };
+    TAROT_API struct
+    Point3F { union { Point1F Data[3]{0}; struct { Point1F X, Y, Z; }; }; };
+    TAROT_API using
+    Point1I = int32_t;
+    TAROT_API struct
+    Point2I { union { Point1I Data[2]{0}; struct { Point1I X, Y; }; }; };
+    TAROT_API struct
+    Point3I { union { Point1I Data[3]{0}; struct { Point1I X, Y, Z; }; }; };
+    TAROT_API using
+    Point1U = uint32_t;
+    TAROT_API struct
+    Point2U { union { Point1U Data[2]{0}; struct { Point1U X, Y; }; }; };
+    TAROT_API struct
+    Point3U { union { Point1U Data[3]{0}; struct { Point1U X, Y, Z; }; }; };
 
     TAROT_API template <typename T>
     concept UniformRNG = requires(T _RNG)
     {
         { _RNG.template Uniform<Float>() } -> std::same_as<Float>;
     };
+
+    TAROT_API template <FloatNumber T> bool
+    IsNaN(T _Number) { return std::isnan(_Number); }
+    TAROT_API template <IntegerNumber T> bool
+    IsNaN(T _Number) { return false; }
+    TAROT_API template <FloatNumber T> bool
+    IsInfinite(T _Number) { return std::isinf(_Number); }
+    TAROT_API template <IntegerNumber T> bool
+    IsInfinite(T _Number) { return false; }
+    TAROT_API template <FloatNumber T> bool
+    IsFinite(T _Number) { return std::isfinite(_Number); }
+    TAROT_API template <IntegerNumber T> bool
+    IsFinite(T _Number) { return true; }
+
+    TAROT_API template <RealNumber T> T
+    FMA(T _a, T _b, T _c) { return std::fma(_a, _b, _c); }
+    TAROT_API template <FloatNumber T> T
+    GetNextFloat(T _Number) { return std::nextafter(_Number, +std::numeric_limits<T>::infinity()); }
+    TAROT_API template <FloatNumber T> T
+    GetPrevFloat(T _Number) { return std::nextafter(_Number, -std::numeric_limits<T>::infinity()); }
 
     TAROT_API inline auto
     GetRandomSeed() -> uint32_t
