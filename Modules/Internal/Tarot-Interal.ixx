@@ -56,12 +56,16 @@ namespace Tarot
     Point2U { union { Point1U Data[2]{0}; struct { Point1U X, Y; }; }; };
     TAROT_API struct
     Point3U { union { Point1U Data[3]{0}; struct { Point1U X, Y, Z; }; }; };
-
-    TAROT_API template <typename T>
-    concept UniformRNG = requires(T _RNG)
-    {
-        { _RNG.template Uniform<Float>() } -> std::same_as<Float>;
-    };
+    TAROT_API template<typename T>
+    concept PhysicalPoint = std::is_same_v<T, Point1F> ||
+                            std::is_same_v<T, Point2F> ||
+                            std::is_same_v<T, Point3F> ||
+                            std::is_same_v<T, Point1I> ||
+                            std::is_same_v<T, Point2I> ||
+                            std::is_same_v<T, Point3I> ||
+                            std::is_same_v<T, Point1U> ||
+                            std::is_same_v<T, Point2U> ||
+                            std::is_same_v<T, Point3U>;
 
     TAROT_API template <FloatNumber T> bool
     IsNaN(T _Number) { return std::isnan(_Number); }

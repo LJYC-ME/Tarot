@@ -4,7 +4,7 @@
 
 module;
 #include <algorithm>
-export module Tarot.Random:RNG;
+export module Tarot.Random:PCG;
 
 import Tarot.Internal;
 
